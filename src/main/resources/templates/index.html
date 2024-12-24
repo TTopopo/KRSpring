@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главная страница системы управления строительными объектами</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(to right, #f0f4f8, #d9e2ec);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #2d6b9f;
+            margin-bottom: 40px;
+        }
+
+        button {
+            background-color: #2d6b9f; /* Primary button color */
+            color: white; /* Text color */
+            border: none; /* No border */
+            padding: 15px; /* Vertical padding */
+            font-size: 16px; /* Font size */
+            border-radius: 5px; /* Rounded corners */
+            cursor: pointer; /* Pointer cursor on hover */
+            transition: background-color 0.3s ease; /* Transition effect */
+            margin: 10px auto; /* Centered with margin */
+            display: block; /* Block display for centering */
+            width: 250px; /* Fixed width for uniformity */
+            height: 50px; /* Fixed height for uniformity */
+        }
+
+        button:hover {
+            background-color: #337AB7; /* Darker shade on hover */
+        }
+
+        @media (max-width: 600px) {
+            button {
+                width: 90%; /* Responsive width on small screens */
+                height: 50px; /* Maintain height */
+                padding: 12px; /* Reduced padding */
+                font-size: 14px; /* Smaller font size */
+            }
+        }
+    </style>
+</head>
+<body>
+<h1>Главная страница системы управления строительными объектами</h1>
+<button onclick="location.href='/workers'">Рабочие</button>
+<button onclick="location.href='/foremans'">Прорабы</button>
+<button onclick="location.href='/objects'">Объекты</button>
+<button onclick="location.href='/customers'">Заказчики</button>
+</body>
+</html>

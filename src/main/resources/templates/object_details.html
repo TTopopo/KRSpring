@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Детали объекта</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .info {
+            margin: 15px 0;
+            padding: 10px;
+            border-left: 5px solid #4CAF50;
+            background-color: #f9f9f9;
+        }
+        .info p {
+            margin: 5px 0;
+            font-size: 18px;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .btn-group a {
+            padding: 10px;
+            border-radius: 5px;
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-group .btn-back {
+            background-color: #4CAF50;
+        }
+        .btn-group .btn-back:hover {
+            background-color: #45a049;
+        }
+        .btn-group .btn-edit {
+            background-color: #ff9800;
+        }
+        .btn-group .btn-edit:hover {
+            background-color: #e68900;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Детали объекта</h1>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">Тип: <span th:text="${object.type}"></span></h5>
+            <p class="card-text">Название: <span th:text="${object.name}"></span></p>
+            <p class="card-text">Адрес: <span th:text="${object.address}"></span></p>
+            <p class="card-text">Статус: <span th:text="${object.status}"></span></p>
+            <p class="card-text">Заказчик: <span th:text="${object.customer.name} + ' ' + ${object.customer.surname}"></span></p>
+            <p class="card-text">Прораб: <span th:text="${object.foreman.name} + ' ' + ${object.foreman.surname}"></span></p>
+        </div>
+    </div>
+    <div class="btn-group">
+        <a href="/objects" class="btn-back">Назад</a>
+        <a th:href="@{/objects/edit/{id}(id=${object.id})}" class="btn-edit">Редактировать</a>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
