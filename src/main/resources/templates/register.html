@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+        }
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .btn-group {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+        .btn-group button, .btn-group a {
+            padding: 10px;
+            border-radius: 5px;
+            flex: 1;
+            text-align: center;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+        }
+        .btn-group .btn-register {
+            background-color: #007bff;
+        }
+        .btn-group .btn-register:hover {
+            background-color: #0056b3;
+        }
+        .btn-group .btn-back {
+            background-color: #6c757d;
+        }
+        .btn-group .btn-back:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Регистрация</h1>
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <div class="form-group">
+            <label for="username">Имя пользователя:</label>
+            <input type="text" class="form-control" id="username" th:field="*{username}" required>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Имя пользователя Error</div>
+        </div>
+        <div class="form-group">
+            <label for="password">Пароль:</label>
+            <input type="password" class="form-control" id="password" th:field="*{password}" required>
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Пароль Error</div>
+        </div>
+        <div class="form-group">
+            <label for="role">Роль:</label>
+            <select class="form-control" id="role" th:field="*{role}">
+                <option value="ROLE_ADMIN">Администратор</option>
+                <option value="ROLE_CUSTOMER">Заказчик</option>
+                <option value="ROLE_FOREMAN">Прораб</option>
+            </select>
+        </div>
+        <div class="btn-group">
+            <button type="submit" class="btn-register">Зарегистрироваться</button>
+            <a href="/login" class="btn-back">Назад</a>
+        </div>
+    </form>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
