@@ -3,6 +3,7 @@ package com.example.KRspring.Controllers;
 import com.example.KRspring.Models.Customer;
 import com.example.KRspring.Services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -25,12 +26,14 @@ public class CustomerController {
         return "customers";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/customers/new")
     public String showNewCustomerForm(Model model) {
         model.addAttribute("customer", new Customer());
         return "new_customer";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/customers/new")
     public String addCustomer(@Valid Customer customer, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -47,6 +50,7 @@ public class CustomerController {
         return "customer_details";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/customers/edit/{id}")
     public String showEditCustomerForm(@PathVariable Long id, Model model) {
         Customer customer = customerService.getCustomerById(id);
@@ -54,6 +58,7 @@ public class CustomerController {
         return "edit_customer";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/customers/edit/{id}")
     public String updateCustomer(@PathVariable Long id, @Valid Customer customer, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -64,6 +69,7 @@ public class CustomerController {
         return "redirect:/customers";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/customers/delete/{id}")
     public String deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomer(id);
@@ -76,6 +82,4 @@ public class CustomerController {
         model.addAttribute("customers", customers);
         return "customers";
     }
-
-    // Другие методы
 }

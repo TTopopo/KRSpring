@@ -1,10 +1,10 @@
 package com.example.KRspring.Controllers;
 
-import com.example.KRspring.Models.Customer;
 import com.example.KRspring.Models.Foreman;
 import com.example.KRspring.Services.CustomerService;
 import com.example.KRspring.Services.ForemanService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,6 +30,7 @@ public class ForemanController {
         return "foremans";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/foremans/new")
     public String showNewForemanForm(Model model) {
         model.addAttribute("foreman", new Foreman());
@@ -37,6 +38,7 @@ public class ForemanController {
         return "new_foreman";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/foremans/new")
     public String addForeman(@Valid Foreman foreman, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -54,6 +56,7 @@ public class ForemanController {
         return "foreman_details";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/foremans/edit/{id}")
     public String showEditForemanForm(@PathVariable Long id, Model model) {
         Foreman foreman = foremanService.getForemanById(id);
@@ -62,6 +65,7 @@ public class ForemanController {
         return "edit_foreman";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/foremans/edit/{id}")
     public String updateForeman(@PathVariable Long id, @Valid Foreman foreman, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -73,6 +77,7 @@ public class ForemanController {
         return "redirect:/foremans";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/foremans/delete/{id}")
     public String deleteForeman(@PathVariable Long id) {
         foremanService.deleteForeman(id);

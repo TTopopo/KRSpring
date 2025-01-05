@@ -1,12 +1,11 @@
 package com.example.KRspring.Controllers;
 
-import com.example.KRspring.Models.Customer;
-import com.example.KRspring.Models.Foreman;
 import com.example.KRspring.Models.Object;
 import com.example.KRspring.Services.CustomerService;
 import com.example.KRspring.Services.ForemanService;
 import com.example.KRspring.Services.ObjectService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +34,7 @@ public class ObjectController {
         return "objects";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping("/objects/new")
     public String showNewObjectForm(Model model) {
         model.addAttribute("object", new Object());
@@ -43,6 +43,7 @@ public class ObjectController {
         return "new_object";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @PostMapping("/objects/new")
     public String addObject(@Valid Object object, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -61,6 +62,7 @@ public class ObjectController {
         return "object_details";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @GetMapping("/objects/edit/{id}")
     public String showEditObjectForm(@PathVariable Long id, Model model) {
         Object object = objectService.getObjectById(id);
@@ -70,6 +72,7 @@ public class ObjectController {
         return "edit_object";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @PostMapping("/objects/edit/{id}")
     public String updateObject(@PathVariable Long id, @Valid Object object, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -82,6 +85,7 @@ public class ObjectController {
         return "redirect:/objects";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/objects/delete/{id}")
     public String deleteObject(@PathVariable Long id) {
         objectService.deleteObject(id);

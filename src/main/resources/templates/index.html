@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,6 +50,9 @@
 </head>
 <body>
 <h1>Главная страница системы управления строительными объектами</h1>
+<div sec:authorize="isAuthenticated()">
+    Авторизован как <span sec:authentication="name"></span>
+</div>
 <button onclick="location.href='/workers'">Рабочие</button>
 <button onclick="location.href='/foremans'">Прорабы</button>
 <button onclick="location.href='/objects'">Объекты</button>

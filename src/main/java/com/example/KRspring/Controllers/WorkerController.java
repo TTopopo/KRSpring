@@ -4,6 +4,7 @@ import com.example.KRspring.Models.Worker;
 import com.example.KRspring.Services.ForemanService;
 import com.example.KRspring.Services.WorkerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +30,7 @@ public class WorkerController {
         return "workers";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FOREMAN')")
     @GetMapping("/workers/new")
     public String showNewWorkerForm(Model model) {
         model.addAttribute("worker", new Worker());
@@ -36,6 +38,7 @@ public class WorkerController {
         return "new_worker";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FOREMAN')")
     @PostMapping("/workers/new")
     public String addWorker(@Valid Worker worker, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -53,6 +56,7 @@ public class WorkerController {
         return "worker_details";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FOREMAN')")
     @GetMapping("/workers/edit/{id}")
     public String showEditWorkerForm(@PathVariable Long id, Model model) {
         Worker worker = workerService.getWorkerById(id);
@@ -61,6 +65,7 @@ public class WorkerController {
         return "edit_worker";
     }
 
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FOREMAN')")
     @PostMapping("/workers/edit/{id}")
     public String updateWorker(@PathVariable Long id, @Valid Worker worker, BindingResult result, Model model) {
         if (result.hasErrors()) {
@@ -72,6 +77,7 @@ public class WorkerController {
         return "redirect:/workers";
     }
 
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/workers/delete/{id}")
     public String deleteWorker(@PathVariable Long id) {
         workerService.deleteWorker(id);
