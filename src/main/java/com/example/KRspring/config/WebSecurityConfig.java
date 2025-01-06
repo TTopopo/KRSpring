@@ -40,6 +40,8 @@ public class WebSecurityConfig {
                         .permitAll()
                 )
                 .logout(logout -> logout
+                        .logoutUrl("/logout") // Настройка URL для выхода
+                        .logoutSuccessUrl("/login?logout") // Перенаправление после успешного выхода
                         .permitAll()
                 );
 

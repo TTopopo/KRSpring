@@ -99,7 +99,8 @@
             <td th:text="${object.address}"></td>
             <td th:text="${object.status}"></td>
             <td th:text="${object.customer.name} + ' ' + ${object.customer.surname}"></td>
-            <td th:text="${object.foreman.name} + ' ' + ${object.foreman.surname}"></td>
+            <td th:if="${object.foreman != null}" th:text="${object.foreman.name} + ' ' + ${object.foreman.surname}"></td>
+            <td th:if="${object.foreman == null}">Нет прораба</td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/objects/{id}(id=${object.id})}" class="btn-details">Детали</a>

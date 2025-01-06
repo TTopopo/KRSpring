@@ -64,19 +64,41 @@
 <body>
 <div class="container">
     <h1>Детали объекта</h1>
-    <div class="card">
-        <div class="card-body">
-            <h5 class="card-title">Тип: <span th:text="${object.type}"></span></h5>
-            <p class="card-text">Название: <span th:text="${object.name}"></span></p>
-            <p class="card-text">Адрес: <span th:text="${object.address}"></span></p>
-            <p class="card-text">Статус: <span th:text="${object.status}"></span></p>
-            <p class="card-text">Заказчик: <span th:text="${object.customer.name} + ' ' + ${object.customer.surname}"></span></p>
-            <p class="card-text">Прораб: <span th:text="${object.foreman.name} + ' ' + ${object.foreman.surname}"></span></p>
-        </div>
+    <div>
+        <label>ID:</label>
+        <span th:text="${object.id}"></span>
+    </div>
+    <div>
+        <label>Тип:</label>
+        <span th:text="${object.type}"></span>
+    </div>
+    <div>
+        <label>Название:</label>
+        <span th:text="${object.name}"></span>
+    </div>
+    <div>
+        <label>Адрес:</label>
+        <span th:text="${object.address}"></span>
+    </div>
+    <div>
+        <label>Статус:</label>
+        <span th:text="${object.status}"></span>
+    </div>
+    <div>
+        <label>Заказчик:</label>
+        <span th:if="${object.customer != null}" th:text="${object.customer.name} + ' ' + ${object.customer.surname}"></span>
+        <span th:if="${object.customer == null}">Нет заказчика</span>
+    </div>
+    <div>
+        <label>Прораб:</label>
+        <span th:if="${object.foreman != null}" th:text="${object.foreman.name} + ' ' + ${object.foreman.surname}"></span>
+        <span th:if="${object.foreman == null}">Нет прораба</span>
     </div>
     <div class="btn-group">
         <a href="/objects" class="btn-back">Назад</a>
         <a th:href="@{/objects/edit/{id}(id=${object.id})}" class="btn-edit">Редактировать</a>
+        <a th:href="@{/objects/delete/{id}(id=${object.id})}" class="btn-delete"
+           onclick="return confirm('Вы уверены, что хотите удалить?');">Удалить</a>
     </div>
 </div>
 

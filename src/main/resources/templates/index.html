@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -38,6 +38,14 @@
             background-color: #337AB7; /* Darker shade on hover */
         }
 
+        .logout-button {
+            background-color: #ff4757; /* Different color for logout button */
+        }
+
+        .logout-button:hover {
+            background-color: #e03131; /* Darker shade on hover */
+        }
+
         @media (max-width: 600px) {
             button {
                 width: 90%; /* Responsive width on small screens */
@@ -50,12 +58,12 @@
 </head>
 <body>
 <h1>Главная страница системы управления строительными объектами</h1>
-<div sec:authorize="isAuthenticated()">
-    Авторизован как <span sec:authentication="name"></span>
-</div>
 <button onclick="location.href='/workers'">Рабочие</button>
 <button onclick="location.href='/foremans'">Прорабы</button>
 <button onclick="location.href='/objects'">Объекты</button>
 <button onclick="location.href='/customers'">Заказчики</button>
+<form th:action="@{/logout}" method="post">
+    <button type="submit" class="logout-button">Выход</button>
+</form>
 </body>
 </html>

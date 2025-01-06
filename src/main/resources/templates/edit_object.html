@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Редактировать объект</title>
+    <title>Редактирование объекта</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -56,7 +56,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>Редактировать объект</h1>
+    <h1>Редактирование объекта</h1>
     <form th:action="@{/objects/edit/{id}(id=${object.id})}" th:object="${object}" method="post">
         <div class="form-group">
             <label for="type">Тип:</label>
@@ -81,20 +81,19 @@
         <div class="form-group">
             <label for="customer">Заказчик:</label>
             <select class="form-control" id="customer" th:field="*{customer}">
-                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name} + ' ' + ${customer.surname}" th:selected="${customer.id == object.customer.id}"></option>
+                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.name} + ' ' + ${customer.surname}"></option>
             </select>
-            <div th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}">Заказчик Error</div>
         </div>
         <div class="form-group">
             <label for="foreman">Прораб:</label>
             <select class="form-control" id="foreman" th:field="*{foreman}">
-                <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.name} + ' ' + ${foreman.surname}" th:selected="${foreman.id == object.foreman.id}"></option>
-            </select>0
-            <div th:if="${#fields.hasErrors('foreman')}" th:errors="*{foreman}">Прораб Error</div>
+                <option value="">Выберите прораба</option>
+                <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.name} + ' ' + ${foreman.surname}"></option>
+            </select>
         </div>
         <div class="btn-group">
-            <button type="submit" class="btn-save">Сохранить</button>
             <a href="/objects" class="btn-back">Назад</a>
+            <button type="submit" class="btn-save">Сохранить</button>
         </div>
     </form>
 </div>
