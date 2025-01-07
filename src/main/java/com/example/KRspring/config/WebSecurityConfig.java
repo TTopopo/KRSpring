@@ -31,8 +31,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/register", "/customers/main").permitAll() // Разрешить доступ к /register и /customers/main без аутентификации
                         .requestMatchers("/customers/delete/**", "/customers/update/**", "/foremans/new", "/objects/new", "/workers/new").hasRole("ADMIN")
-                        .requestMatchers("/objects/new").hasAnyRole("ADMIN", "CUSTOMER")
-                        .requestMatchers("/workers/new").hasAnyRole("ADMIN", "FOREMAN")
+                        .requestMatchers("/objects/**").hasAnyRole("ADMIN", "CUSTOMER")
+                        .requestMatchers("/workers/**").hasAnyRole("ADMIN", "FOREMAN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
