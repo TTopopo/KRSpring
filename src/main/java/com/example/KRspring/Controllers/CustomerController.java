@@ -26,12 +26,14 @@ public class CustomerController {
         return "customers";
     }
 
+
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/customers/new")
     public String showNewCustomerForm(Model model) {
         model.addAttribute("customer", new Customer());
         return "new_customer";
     }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @PostMapping("/customers/new")

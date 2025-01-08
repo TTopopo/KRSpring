@@ -6,7 +6,9 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ForemanRepository extends JpaRepository<Foreman, Long> {
-    List<Foreman> findByName(String name);
-    List<Foreman> findBySurname(String surname);
-    List<Foreman> findByNameAndSurname(String name, String surname);
+    List<Foreman> findByForemanName(String name);
+    List<Foreman> findByForemanSurname(String surname);
+    List<Foreman> findByForemanNameAndForemanSurname(String name, String surname);
+    List<Foreman> findBySpecialization(String specialization);
+    List<Foreman> findByQualification(String qualification);
 }

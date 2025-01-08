@@ -32,11 +32,11 @@ public class CustomerService {
 
     public List<Customer> searchCustomers(String name, String surname) {
         if (name != null && surname != null) {
-            return customerRepository.findByNameAndSurname(name, surname);
+            return customerRepository.findByCustomerNameAndCustomerSurname(name, surname);
         } else if (name != null) {
-            return customerRepository.findByName(name);
+            return customerRepository.findByCustomerName(name);
         } else if (surname != null) {
-            return customerRepository.findBySurname(surname);
+            return customerRepository.findByCustomerSurname(surname);
         } else {
             return customerRepository.findAll();
         }

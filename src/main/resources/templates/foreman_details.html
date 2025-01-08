@@ -66,13 +66,14 @@
     <h1>Детали прораба</h1>
     <div class="card">
         <div class="card-body">
-            <h5 class="card-title">Имя: <span th:text="${foreman.name}"></span></h5>
-            <p class="card-text">Фамилия: <span th:text="${foreman.surname}"></span></p>
-            <p class="card-text">Отчество: <span th:text="${foreman.patronymic}"></span></p>
+            <h5 class="card-title">Имя: <span th:text="${foreman.foremanName}"></span></h5>
+            <p class="card-text">Фамилия: <span th:text="${foreman.foremanSurname}"></span></p>
+            <p class="card-text">Отчество: <span th:text="${foreman.foremanPatronymic}"></span></p>
             <p class="card-text">Специализация: <span th:text="${foreman.specialization}"></span></p>
-            <p class="card-text">Номер телефона: <span th:text="${foreman.phoneNumber}"></span></p>
+            <p class="card-text">Номер телефона: <span th:text="${foreman.foremanPhoneNumber}"></span></p>
             <p class="card-text">Квалификация: <span th:text="${foreman.qualification}"></span></p>
-            <p class="card-text">Заказчик: <span th:text="${foreman.customer.name} + ' ' + ${foreman.customer.surname}"></span></p>
+            <p class="card-text">Заказчик: <span th:if="${foreman.customer != null}" th:text="${foreman.customer.customerName} + ' ' + ${foreman.customer.customerSurname}"></span>
+                <span th:if="${foreman.customer == null}">Заказчик нет</span></p>
         </div>
     </div>
     <div class="btn-group">

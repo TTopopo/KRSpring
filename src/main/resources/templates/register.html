@@ -59,9 +59,9 @@
     <h1>Регистрация</h1>
     <form th:action="@{/register}" th:object="${user}" method="post">
         <div class="form-group">
-            <label for="username">Имя пользователя:</label>
+            <label for="username">Логин:</label>
             <input type="text" class="form-control" id="username" th:field="*{username}" required>
-            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Имя пользователя Error</div>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Логин Error</div>
         </div>
         <div class="form-group">
             <label for="password">Пароль:</label>
@@ -70,10 +70,65 @@
         </div>
         <div class="form-group">
             <label for="role">Роль:</label>
-            <select class="form-control" id="role" th:field="*{role}">
+            <select class="form-control" id="role" th:field="*{role}" onchange="toggleFields()">
+                <option value="">Выберите роль</option>
                 <option value="ROLE_CUSTOMER">Заказчик</option>
                 <option value="ROLE_FOREMAN">Прораб</option>
             </select>
+        </div>
+        <div id="customerFields" style="display: none;">
+            <div class="form-group">
+                <label for="customerName">Имя:</label>
+                <input type="text" class="form-control" id="customerName" th:field="*{customerName}" required>
+                <div th:if="${#fields.hasErrors('customerName')}" th:errors="*{customerName}">Имя Error</div>
+            </div>
+            <div class="form-group">
+                <label for="customerSurname">Фамилия:</label>
+                <input type="text" class="form-control" id="customerSurname" th:field="*{customerSurname}" required>
+                <div th:if="${#fields.hasErrors('customerSurname')}" th:errors="*{customerSurname}">Фамилия Error</div>
+            </div>
+            <div class="form-group">
+                <label for="customerPatronymic">Отчество:</label>
+                <input type="text" class="form-control" id="customerPatronymic" th:field="*{customerPatronymic}" required>
+                <div th:if="${#fields.hasErrors('customerPatronymic')}" th:errors="*{customerPatronymic}">Отчество Error</div>
+            </div>
+            <div class="form-group">
+                <label for="customerPhoneNumber">Номер телефона:</label>
+                <input type="text" class="form-control" id="customerPhoneNumber" th:field="*{customerPhoneNumber}" required>
+                <div th:if="${#fields.hasErrors('customerPhoneNumber')}" th:errors="*{customerPhoneNumber}">Номер телефона Error</div>
+            </div>
+        </div>
+        <div id="foremanFields" style="display: none;">
+            <div class="form-group">
+                <label for="foremanName">Имя:</label>
+                <input type="text" class="form-control" id="foremanName" th:field="*{foremanName}" required>
+                <div th:if="${#fields.hasErrors('foremanName')}" th:errors="*{foremanName}">Имя Error</div>
+            </div>
+            <div class="form-group">
+                <label for="foremanSurname">Фамилия:</label>
+                <input type="text" class="form-control" id="foremanSurname" th:field="*{foremanSurname}" required>
+                <div th:if="${#fields.hasErrors('foremanSurname')}" th:errors="*{foremanSurname}">Фамилия Error</div>
+            </div>
+            <div class="form-group">
+                <label for="foremanPatronymic">Отчество:</label>
+                <input type="text" class="form-control" id="foremanPatronymic" th:field="*{foremanPatronymic}" required>
+                <div th:if="${#fields.hasErrors('foremanPatronymic')}" th:errors="*{foremanPatronymic}">Отчество Error</div>
+            </div>
+            <div class="form-group">
+                <label for="foremanPhoneNumber">Номер телефона:</label>
+                <input type="text" class="form-control" id="foremanPhoneNumber" th:field="*{foremanPhoneNumber}" required>
+                <div th:if="${#fields.hasErrors('foremanPhoneNumber')}" th:errors="*{foremanPhoneNumber}">Номер телефона Error</div>
+            </div>
+            <div class="form-group">
+                <label for="foremanSpecialization">Специализация:</label>
+                <input type="text" class="form-control" id="foremanSpecialization" th:field="*{specialization}" required>
+                <div th:if="${#fields.hasErrors('specialization')}" th:errors="*{specialization}">Специализация Error</div>
+            </div>
+            <div class="form-group">
+                <label for="foremanQualification">Квалификация:</label>
+                <input type="text" class="form-control" id="foremanQualification" th:field="*{qualification}" required>
+                <div th:if="${#fields.hasErrors('qualification')}" th:errors="*{qualification}">Квалификация Error</div>
+            </div>
         </div>
         <div class="btn-group">
             <button type="submit" class="btn-register">Зарегистрироваться</button>
@@ -81,6 +136,76 @@
         </div>
     </form>
 </div>
+<script>
+    function toggleFields() {
+        var roleSelect = document.getElementById('role');
+        var customerFields = document.getElementById('customerFields');
+        var foremanFields = document.getElementById('foremanFields');
+
+        console.log("Selected role: ", roleSelect.value);
+
+        if (roleSelect.value === 'ROLE_CUSTOMER') {
+            customerFields.style.display = 'block';
+            foremanFields.style.display = 'none';
+
+            // Устанавливаем required для полей заказчика
+            document.getElementById('customerName').required = true;
+            document.getElementById('customerSurname').required = true;
+            document.getElementById('customerPatronymic').required = true;
+            document.getElementById('customerPhoneNumber').required = true;
+
+            // Убираем required для полей прораба
+            document.getElementById('foremanName').required = false;
+            document.getElementById('foremanSurname').required = false;
+            document.getElementById('foremanPatronymic').required = false;
+            document.getElementById('foremanPhoneNumber').required = false;
+            document.getElementById('foremanSpecialization').required = false;
+            document.getElementById('foremanQualification').required = false;
+
+            console.log("Customer fields displayed: ", customerFields.style.display);
+            console.log("Foreman fields displayed: ", foremanFields.style.display);
+        } else if (roleSelect.value === 'ROLE_FOREMAN') {
+            customerFields.style.display = 'none';
+            foremanFields.style.display = 'block';
+
+            // Убираем required для полей заказчика
+            document.getElementById('customerName').required = false;
+            document.getElementById('customerSurname').required = false;
+            document.getElementById('customerPatronymic').required = false;
+            document.getElementById('customerPhoneNumber').required = false;
+
+            // Устанавливаем required для полей прораба
+            document.getElementById('foremanName').required = true;
+            document.getElementById('foremanSurname').required = true;
+            document.getElementById('foremanPatronymic').required = true;
+            document.getElementById('foremanPhoneNumber').required = true;
+            document.getElementById('foremanSpecialization').required = true;
+            document.getElementById('foremanQualification').required = true;
+
+            console.log("Customer fields displayed: ", customerFields.style.display);
+            console.log("Foreman fields displayed: ", foremanFields.style.display);
+        } else {
+            customerFields.style.display = 'none';
+            foremanFields.style.display = 'none';
+
+            // Убираем required для всех полей
+            document.getElementById('customerName').required = false;
+            document.getElementById('customerSurname').required = false;
+            document.getElementById('customerPatronymic').required = false;
+            document.getElementById('customerPhoneNumber').required = false;
+            document.getElementById('foremanName').required = false;
+            document.getElementById('foremanSurname').required = false;
+            document.getElementById('foremanPatronymic').required = false;
+            document.getElementById('foremanPhoneNumber').required = false;
+            document.getElementById('foremanSpecialization').required = false;
+            document.getElementById('foremanQualification').required = false;
+
+            console.log("Customer fields displayed: ", customerFields.style.display);
+            console.log("Foreman fields displayed: ", foremanFields.style.display);
+        }
+    }
+</script>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>

@@ -85,8 +85,8 @@ public class ForemanController {
     }
 
     @GetMapping("/foremans/search")
-    public String searchForemans(@RequestParam(required = false) String name, @RequestParam(required = false) String surname, Model model) {
-        List<Foreman> foremans = foremanService.searchForemans(name, surname);
+    public String searchForemans(@RequestParam(required = false) String name, @RequestParam(required = false) String surname, @RequestParam(required = false) String specialization, @RequestParam(required = false) String qualification, Model model) {
+        List<Foreman> foremans = foremanService.searchForemans(name, surname, specialization, qualification);
         model.addAttribute("foremans", foremans);
         return "foremans";
     }

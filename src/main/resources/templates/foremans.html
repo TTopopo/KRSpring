@@ -95,13 +95,14 @@
         <tbody>
         <tr th:each="foreman : ${foremans}">
             <td th:text="${foreman.id}"></td>
-            <td th:text="${foreman.name}"></td>
-            <td th:text="${foreman.surname}"></td>
-            <td th:text="${foreman.patronymic}"></td>
+            <td th:text="${foreman.foremanName}"></td>
+            <td th:text="${foreman.foremanSurname}"></td>
+            <td th:text="${foreman.foremanPatronymic}"></td>
             <td th:text="${foreman.specialization}"></td>
-            <td th:text="${foreman.phoneNumber}"></td>
+            <td th:text="${foreman.foremanPhoneNumber}"></td>
             <td th:text="${foreman.qualification}"></td>
-            <td th:text="${foreman.customer.name} + ' ' + ${foreman.customer.surname}"></td>
+            <td th:if="${foreman.customer != null}" th:text="${foreman.customer.customerName} + ' ' + ${foreman.customer.customerSurname}"></td>
+            <td th:if="${foreman.customer == null}">Нет заказчика</td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/foremans/{id}(id=${foreman.id})}" class="btn-details">Детали</a>

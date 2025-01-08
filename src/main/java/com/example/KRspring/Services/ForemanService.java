@@ -30,13 +30,17 @@ public class ForemanService {
         foremanRepository.deleteById(id);
     }
 
-    public List<Foreman> searchForemans(String name, String surname) {
+    public List<Foreman> searchForemans(String name, String surname, String specialization, String qualification) {
         if (name != null && surname != null) {
-            return foremanRepository.findByNameAndSurname(name, surname);
+            return foremanRepository.findByForemanNameAndForemanSurname(name, surname);
         } else if (name != null) {
-            return foremanRepository.findByName(name);
+            return foremanRepository.findByForemanName(name);
         } else if (surname != null) {
-            return foremanRepository.findBySurname(surname);
+            return foremanRepository.findByForemanSurname(surname);
+        } else if (specialization != null) {
+            return foremanRepository.findBySpecialization(specialization);
+        } else if (qualification != null) {
+            return foremanRepository.findByQualification(qualification);
         } else {
             return foremanRepository.findAll();
         }

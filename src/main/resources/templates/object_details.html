@@ -23,13 +23,13 @@
             border-radius: 8px;
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
         }
-        .info {
+        .card {
             margin: 15px 0;
             padding: 10px;
             border-left: 5px solid #4CAF50;
             background-color: #f9f9f9;
         }
-        .info p {
+        .card p {
             margin: 5px 0;
             font-size: 18px;
         }
@@ -59,40 +59,29 @@
         .btn-group .btn-edit:hover {
             background-color: #e68900;
         }
+        .btn-group .btn-delete {
+            background-color: #ff4757;
+        }
+        .btn-group .btn-delete:hover {
+            background-color: #e03131;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Детали объекта</h1>
-    <div>
-        <label>ID:</label>
-        <span th:text="${object.id}"></span>
-    </div>
-    <div>
-        <label>Тип:</label>
-        <span th:text="${object.type}"></span>
-    </div>
-    <div>
-        <label>Название:</label>
-        <span th:text="${object.name}"></span>
-    </div>
-    <div>
-        <label>Адрес:</label>
-        <span th:text="${object.address}"></span>
-    </div>
-    <div>
-        <label>Статус:</label>
-        <span th:text="${object.status}"></span>
-    </div>
-    <div>
-        <label>Заказчик:</label>
-        <span th:if="${object.customer != null}" th:text="${object.customer.name} + ' ' + ${object.customer.surname}"></span>
-        <span th:if="${object.customer == null}">Нет заказчика</span>
-    </div>
-    <div>
-        <label>Прораб:</label>
-        <span th:if="${object.foreman != null}" th:text="${object.foreman.name} + ' ' + ${object.foreman.surname}"></span>
-        <span th:if="${object.foreman == null}">Нет прораба</span>
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title">ID: <span th:text="${object.id}"></span></h5>
+            <p class="card-text">Тип: <span th:text="${object.type}"></span></p>
+            <p class="card-text">Название: <span th:text="${object.name}"></span></p>
+            <p class="card-text">Адрес: <span th:text="${object.address}"></span></p>
+            <p class="card-text">Статус: <span th:text="${object.status}"></span></p>
+            <p class="card-text">Заказчик: <span th:if="${object.customer != null}" th:text="${object.customer.customerName} + ' ' + ${object.customer.customerSurname}"></span>
+                <span th:if="${object.customer == null}">Нет заказчика</span></p>
+            <p class="card-text">Прораб: <span th:if="${object.foreman != null}" th:text="${object.foreman.foremanName} + ' ' + ${object.foreman.foremanSurname}"></span>
+                <span th:if="${object.foreman == null}">Нет прораба</span></p>
+        </div>
     </div>
     <div class="btn-group">
         <a href="/objects" class="btn-back">Назад</a>

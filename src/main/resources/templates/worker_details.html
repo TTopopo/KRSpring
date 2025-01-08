@@ -71,7 +71,8 @@
             <p class="card-text">Отчество: <span th:text="${worker.patronymic}"></span></p>
             <p class="card-text">Номер телефона: <span th:text="${worker.phoneNumber}"></span></p>
             <p class="card-text">Должность: <span th:text="${worker.position}"></span></p>
-            <p class="card-text">Прораб: <span th:text="${worker.foreman.name} + ' ' + ${worker.foreman.surname}"></span></p>
+            <p class="card-text">Прораб: <span th:if="${worker.foreman != null}" th:text="${worker.foreman.foremanName} + ' ' + ${worker.foreman.foremanSurname}"></span>
+                <span th:if="${worker.foreman == null}">Прораб нет</span></p>
         </div>
     </div>
     <div class="btn-group">

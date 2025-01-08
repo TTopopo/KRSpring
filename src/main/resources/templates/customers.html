@@ -92,10 +92,10 @@
         <tbody>
         <tr th:each="customer : ${customers}">
             <td th:text="${customer.id}"></td>
-            <td th:text="${customer.name}"></td>
-            <td th:text="${customer.surname}"></td>
-            <td th:text="${customer.patronymic}"></td>
-            <td th:text="${customer.phoneNumber}"></td>
+            <td th:text="${customer.customerName}"></td>
+            <td th:text="${customer.customerSurname}"></td>
+            <td th:text="${customer.customerPatronymic}"></td>
+            <td th:text="${customer.customerPhoneNumber}"></td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/customers/{id}(id=${customer.id})}" class="btn-details">Детали</a>

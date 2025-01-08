@@ -99,7 +99,8 @@
             <td th:text="${worker.patronymic}"></td>
             <td th:text="${worker.phoneNumber}"></td>
             <td th:text="${worker.position}"></td>
-            <td th:text="${worker.foreman.name} + ' ' + ${worker.foreman.surname}"></td>
+            <td th:if="${worker.foreman != null}" th:text="${worker.foreman.foremanName} + ' ' + ${worker.foreman.foremanSurname}"></td>
+            <td th:if="${worker.foreman == null}">Нет прораба</td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/workers/{id}(id=${worker.id})}" class="btn-details">Детали</a>

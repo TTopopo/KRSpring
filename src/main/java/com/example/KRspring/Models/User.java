@@ -26,6 +26,36 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role role;
 
+    @Column(length = 50)
+    private String customerName;
+
+    @Column(length = 50)
+    private String customerSurname;
+
+    @Column(length = 50)
+    private String customerPatronymic;
+
+    @Column(name = "customer_phone_number", length = 15)
+    private String customerPhoneNumber;
+
+    @Column(length = 50)
+    private String foremanName;
+
+    @Column(length = 50)
+    private String foremanSurname;
+
+    @Column(length = 50)
+    private String foremanPatronymic;
+
+    @Column(name = "foreman_phone_number", length = 15)
+    private String foremanPhoneNumber;
+
+    @Column(length = 50)
+    private String specialization;
+
+    @Column(length = 50)
+    private String qualification;
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return Collections.singleton(role);

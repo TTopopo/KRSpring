@@ -85,7 +85,8 @@
         <div class="form-group">
             <label for="foreman">Прораб:</label>
             <select class="form-control" id="foreman" th:field="*{foreman}">
-                <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.name} + ' ' + ${foreman.surname}"></option>
+                <option value="">Прораб не назначен</option>
+                <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.foremanName} + ' ' + ${foreman.foremanSurname}"></option>
             </select>
             <div th:if="${#fields.hasErrors('foreman')}" th:errors="*{foreman}">Прораб Error</div>
         </div>
