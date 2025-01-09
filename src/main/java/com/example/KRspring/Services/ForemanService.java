@@ -45,4 +45,9 @@ public class ForemanService {
             return foremanRepository.findAll();
         }
     }
+
+    // Метод для поиска по имени пользователя
+    public Foreman getForemanByUsername(String username) {
+        return foremanRepository.findByUsername(username);
+    }
 }

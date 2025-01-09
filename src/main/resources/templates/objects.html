@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Объекты</title>
@@ -44,10 +44,10 @@
             background-color: #45a049;
         }
         .btn-group .btn-details {
-            background-color: #007bff;
+            background-color: #6a0dad; /* Измененный цвет фона */
         }
         .btn-group .btn-details:hover {
-            background-color: #0056b3;
+            background-color: #5a008e; /* Измененный цвет фона при наведении */
         }
         .btn-group .btn-edit {
             background-color: #ff9800;
@@ -61,12 +61,26 @@
         .btn-group .btn-delete:hover {
             background-color: #e03131;
         }
+        .user-info {
+            background-color: #e9ecef; /* Цвет фона блока */
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .user-info h2 {
+            color: #6a0dad; /* Цвет заголовка */
+        }
+        .user-info p {
+            margin: 5px 0;
+            color: #343a40; /* Цвет текста */
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Список объектов</h1>
-    <a href="/objects/new" class="btn btn-primary mb-3">Добавить объект</a>
+    <a sec:authorize="!hasRole('ROLE_FOREMAN')" href="/objects/new" class="btn btn-primary mb-3">Добавить объект</a>
 
     <form method="get" th:action="@{/objects/search}" class="form-inline mb-4">
         <div class="form-group mr-2">
@@ -97,21 +111,40 @@
             <td th:text="${object.type}"></td>
             <td th:text="${object.name}"></td>
             <td th:text="${object.address}"></td>
-            <td th:text="${object.status}"></td>
-            <td th:text="${object.customer.customerName} + ' ' + ${object.customer.customerSurname}"></td>
+            <td th:text="${object.status.displayName}"></td>
+            <td th:if="${object.customer != null}" th:text="${object.customer.customerName} + ' ' + ${object.customer.customerSurname}"></td>
+            <td th:if="${object.customer == null}">Нет заказчика</td>
             <td th:if="${object.foreman != null}" th:text="${object.foreman.foremanName} + ' ' + ${object.foreman.foremanSurname}"></td>
             <td th:if="${object.foreman == null}">Нет прораба</td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/objects/{id}(id=${object.id})}" class="btn-details">Детали</a>
-                    <a th:href="@{/objects/edit/{id}(id=${object.id})}" class="btn-edit">Редактировать</a>
-                    <a th:href="@{/objects/delete/{id}(id=${object.id})}" class="btn-delete"
+                    <a sec:authorize="hasRole('ROLE_ADMIN') or hasRole('ROLE_FOREMAN')"
+                       th:href="@{/objects/edit/{id}(id=${object.id})}" class="btn-edit">Редактировать</a>
+                    <a sec:authorize="hasRole('ROLE_ADMIN')"
+                       th:href="@{/objects/delete/{id}(id=${object.id})}" class="btn-delete"
                        onclick="return confirm('Вы уверены, что хотите удалить?');">Удалить</a>
                 </div>
             </td>
         </tr>
         </tbody>
     </table>
+
+    <div th:if="${currentUser != null}" class="user-info mt-4">
+        <h2>Текущий пользователь</h2>
+        <div sec:authorize="hasRole('ROLE_CUSTOMER')">
+            <p>Имя: <span th:text="${currentUser.customerName}"></span></p>
+            <p>Фамилия: <span th:text="${currentUser.customerSurname}"></span></p>
+            <p>Отчество: <span th:text="${currentUser.customerPatronymic}"></span></p>
+            <p>Телефон: <span th:text="${currentUser.customerPhoneNumber}"></span></p>
+        </div>
+        <div sec:authorize="hasRole('ROLE_FOREMAN')">
+            <p>Имя: <span th:text="${currentUser.foremanName}"></span></p>
+            <p>Фамилия: <span th:text="${currentUser.foremanSurname}"></span></p>
+            <p>Отчество: <span th:text="${currentUser.foremanPatronymic}"></span></p>
+            <p>Телефон: <span th:text="${currentUser.foremanPhoneNumber}"></span></p>
+        </div>
+    </div>
 
     <div class="btn-group">
         <a href="/" class="btn-back">Назад</a>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Редактирование объекта</title>
@@ -58,39 +58,45 @@
 <div class="container">
     <h1>Редактирование объекта</h1>
     <form th:action="@{/objects/edit/{id}(id=${object.id})}" th:object="${object}" method="post">
-        <div class="form-group">
+        <!-- Поля, которые скрываются для прораба -->
+        <div class="form-group" sec:authorize="!hasRole('ROLE_FOREMAN')">
             <label for="type">Тип:</label>
             <input type="text" class="form-control" id="type" th:field="*{type}" required>
             <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Тип Error</div>
         </div>
-        <div class="form-group">
+        <div class="form-group" sec:authorize="!hasRole('ROLE_FOREMAN')">
             <label for="name">Название:</label>
             <input type="text" class="form-control" id="name" th:field="*{name}" required>
             <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название Error</div>
         </div>
-        <div class="form-group">
+        <div class="form-group" sec:authorize="!hasRole('ROLE_FOREMAN')">
             <label for="address">Адрес:</label>
             <input type="text" class="form-control" id="address" th:field="*{address}" required>
             <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Адрес Error</div>
         </div>
-        <div class="form-group">
-            <label for="status">Статус:</label>
-            <input type="text" class="form-control" id="status" th:field="*{status}" required>
-            <div th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Статус Error</div>
-        </div>
-        <div class="form-group">
+        <div class="form-group" sec:authorize="!hasRole('ROLE_FOREMAN')">
             <label for="customer">Заказчик:</label>
             <select class="form-control" id="customer" th:field="*{customer}">
                 <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.customerName} + ' ' + ${customer.customerSurname}"></option>
             </select>
         </div>
-        <div class="form-group">
+        <div class="form-group" sec:authorize="!hasRole('ROLE_FOREMAN')">
             <label for="foreman">Прораб:</label>
             <select class="form-control" id="foreman" th:field="*{foreman}">
                 <option value="">Прораб не назначен</option>
                 <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.foremanName} + ' ' + ${foreman.foremanSurname}"></option>
             </select>
         </div>
+
+        <!-- Поле Статус, доступное для всех -->
+        <div class="form-group">
+            <label for="status">Статус:</label>
+            <select class="form-control" id="status" th:field="*{status}">
+                <option th:each="status : ${T(com.example.KRspring.Models.ObjectStatus).values()}" th:value="${status}" th:text="${status.displayName}" th:selected="${object.status == status}"></option>
+            </select>
+            <div th:if="${#fields.hasErrors('status')}" th:errors="*{status}">Статус Error</div>
+        </div>
+
         <div class="btn-group">
             <a href="/objects" class="btn-back">Назад</a>
             <button type="submit" class="btn-save">Сохранить</button>

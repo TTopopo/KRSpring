@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Детали объекта</title>
@@ -76,7 +76,8 @@
             <p class="card-text">Тип: <span th:text="${object.type}"></span></p>
             <p class="card-text">Название: <span th:text="${object.name}"></span></p>
             <p class="card-text">Адрес: <span th:text="${object.address}"></span></p>
-            <p class="card-text">Статус: <span th:text="${object.status}"></span></p>
+            <p class="card-text">Статус: <span th:text="${object.status.displayName}"></span></p>
+
             <p class="card-text">Заказчик: <span th:if="${object.customer != null}" th:text="${object.customer.customerName} + ' ' + ${object.customer.customerSurname}"></span>
                 <span th:if="${object.customer == null}">Нет заказчика</span></p>
             <p class="card-text">Прораб: <span th:if="${object.foreman != null}" th:text="${object.foreman.foremanName} + ' ' + ${object.foreman.foremanSurname}"></span>
@@ -85,8 +86,8 @@
     </div>
     <div class="btn-group">
         <a href="/objects" class="btn-back">Назад</a>
-        <a th:href="@{/objects/edit/{id}(id=${object.id})}" class="btn-edit">Редактировать</a>
-        <a th:href="@{/objects/delete/{id}(id=${object.id})}" class="btn-delete"
+        <a sec:authorize="!hasRole('ROLE_CUSTOMER')" th:href="@{/objects/edit/{id}(id=${object.id})}" class="btn-edit">Редактировать</a>
+        <a sec:authorize="hasRole('ROLE_ADMIN')" th:href="@{/objects/delete/{id}(id=${object.id})}" class="btn-delete"
            onclick="return confirm('Вы уверены, что хотите удалить?');">Удалить</a>
     </div>
 </div>

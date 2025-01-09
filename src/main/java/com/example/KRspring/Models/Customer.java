@@ -37,6 +37,9 @@ public class Customer {
     @Column(name = "customer_phone_number", length = 15)
     private String customerPhoneNumber;
 
+    @Column(name = "username", unique = true, length = 50)
+    private String username;
+
     @OneToMany(mappedBy = "customer")
     private List<Foreman> foremen;
 }

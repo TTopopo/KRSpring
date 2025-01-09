@@ -26,6 +26,10 @@ public class CustomerService {
         return optionalCustomer.orElse(null);
     }
 
+    public Customer getCustomerByUsername(String username) {
+        return customerRepository.findByUsername(username).orElse(null);
+    }
+
     public void deleteCustomer(Long id) {
         customerRepository.deleteById(id);
     }
@@ -41,6 +45,4 @@ public class CustomerService {
             return customerRepository.findAll();
         }
     }
-
-    // Другие методы
 }

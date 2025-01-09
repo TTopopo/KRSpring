@@ -41,6 +41,9 @@ public class Foreman {
     @Size(min = 2, max = 50, message = "Квалификация должна быть от 2 до 50 символов")
     private String qualification;
 
+    @Column(name = "username", unique = true, length = 50)
+    private String username;
+
     @OneToMany(mappedBy = "foreman")
     private List<Worker> workers;
 

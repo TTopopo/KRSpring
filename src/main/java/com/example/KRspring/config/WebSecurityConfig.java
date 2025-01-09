@@ -29,26 +29,27 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/register", "/customers/main").permitAll() // Разрешить доступ к /register и /customers/main без аутентификации
-                        .requestMatchers("/customers/delete/**", "/customers/update/**", "/foremans/new", "/objects/new", "/workers/new").hasRole("ADMIN")
-                        .requestMatchers("/objects/**").hasAnyRole("ADMIN", "CUSTOMER")
+                        .requestMatchers("/register", "/customers/main").permitAll()
+                        .requestMatchers("/customers/delete/**", "/customers/update/**", "/foremans/new", "/workers/new").hasRole("ADMIN")
+                        .requestMatchers("/objects/new").hasAnyRole("ADMIN", "CUSTOMER") // Разрешить заказчику добавлять новые объекты
+                        .requestMatchers("/objects/**").hasAnyRole("ADMIN", "CUSTOMER", "FOREMAN")
                         .requestMatchers("/workers/**").hasAnyRole("ADMIN", "FOREMAN")
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
-                        .loginPage("/login") // Настройка кастомной страницы входа
+                        .loginPage("/login")
                         .permitAll()
                 )
                 .logout(logout -> logout
-                        .logoutUrl("/logout") // Настройка URL для выхода
-                        .logoutSuccessUrl("/login?logout") // Перенаправление после успешного выхода
+                        .logoutUrl("/logout")
+                        .logoutSuccessUrl("/login?logout")
                         .permitAll()
                 );
 
-        // Configure AuthenticationManagerBuilder
         AuthenticationManagerBuilder auth = http.getSharedObject(AuthenticationManagerBuilder.class);
         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 
         return http.build();
     }
+
 }

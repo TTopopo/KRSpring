@@ -21,4 +21,5 @@ public class CustomUserDetailsService implements UserDetailsService {
         Optional<User> userOptional = userRepository.findByUsername(username);
         return userOptional.orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
+
 }

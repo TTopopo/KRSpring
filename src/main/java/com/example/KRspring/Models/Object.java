@@ -28,9 +28,8 @@ public class Object {
     @Size(min = 2, max = 255, message = "Адрес должен быть от 2 до 255 символов")
     private String address;
 
-    @NotBlank(message = "Статус не может быть пустым")
-    @Size(min = 2, max = 50, message = "Статус должен быть от 2 до 50 символов")
-    private String status;
+    @Enumerated(EnumType.STRING)
+    private ObjectStatus status = ObjectStatus.NOT_STARTED; // Устанавливаем статус по умолчанию
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
@@ -42,4 +41,11 @@ public class Object {
 
     @OneToMany(mappedBy = "object")
     private List<WorkerObject> workerObjects;
+
+    @PrePersist
+    protected void onCreate() {
+        if (status == null) {
+            status = ObjectStatus.NOT_STARTED;
+        }
+    }
 }
