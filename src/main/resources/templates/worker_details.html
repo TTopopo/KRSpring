@@ -73,6 +73,8 @@
             <p class="card-text">Должность: <span th:text="${worker.position}"></span></p>
             <p class="card-text">Прораб: <span th:if="${worker.foreman != null}" th:text="${worker.foreman.foremanName} + ' ' + ${worker.foreman.foremanSurname}"></span>
                 <span th:if="${worker.foreman == null}">Прораб нет</span></p>
+            <p class="card-text">Объект: <span th:if="${worker.object != null}" th:text="${worker.object.name}"></span>
+                <span th:if="${worker.object == null}">Объект не назначен</span></p> <!-- Изменено для отображения названия объекта -->
         </div>
     </div>
     <div class="btn-group">

@@ -9,4 +9,5 @@ public interface WorkerRepository extends JpaRepository<Worker, Long> {
     List<Worker> findByName(String name);
     List<Worker> findBySurname(String surname);
     List<Worker> findByNameAndSurname(String name, String surname);
+    List<Worker> findByForemanId(Long foremanId); // Добавлен метод для поиска по ID прораба
 }

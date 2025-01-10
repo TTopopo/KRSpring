@@ -90,11 +90,11 @@ public class ObjectController {
         return "new_object";
     }
 
-
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
     @PostMapping("/objects/new")
     public String addObject(@Valid Object object, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            logger.error("Validation errors: {}", result.getAllErrors());
             model.addAttribute("customers", customerService.getAllCustomers());
             model.addAttribute("foremans", foremanService.getAllForemans());
             return "new_object";
@@ -120,7 +120,7 @@ public class ObjectController {
     }
 
     @GetMapping("/objects/edit/{id}")
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER', 'ROLE_FOREMAN')")
     public String showEditObjectForm(@PathVariable Long id, Model model) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
@@ -137,18 +137,41 @@ public class ObjectController {
         return "edit_object";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER')")
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER', 'ROLE_FOREMAN')")
     @PostMapping("/objects/edit/{id}")
     public String updateObject(@PathVariable Long id, @Valid Object object, BindingResult result, Model model) {
         if (result.hasErrors()) {
+            logger.error("Validation errors: {}", result.getAllErrors());
             object.setId(id);
             model.addAttribute("customers", customerService.getAllCustomers());
             model.addAttribute("foremans", foremanService.getAllForemans());
             return "edit_object";
         }
-        objectService.saveObject(object);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object existingObject = objectService.getObjectById(id);
+
+        if (authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_FOREMAN"))) {
+            // Обновляем только статус, если пользователь является прорабом
+            existingObject.setStatus(object.getStatus());
+            logger.info("Updating object status with id: {}, new status: {}", id, object.getStatus());
+        } else {
+            // Обновляем все поля, если пользователь не является прорабом
+            existingObject.setType(object.getType());
+            existingObject.setName(object.getName());
+            existingObject.setAddress(object.getAddress());
+            existingObject.setCustomer(object.getCustomer());
+            existingObject.setForeman(object.getForeman());
+            existingObject.setStatus(object.getStatus());
+            logger.info("Updating object with id: {}, new status: {}", id, object.getStatus());
+        }
+
+        objectService.saveObject(existingObject);
         return "redirect:/objects";
     }
+
+
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/objects/delete/{id}")

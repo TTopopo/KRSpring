@@ -1,6 +1,7 @@
 package com.example.KRspring.Services;
 
 import com.example.KRspring.Models.Foreman;
+import com.example.KRspring.Models.Role;
 import com.example.KRspring.Repositories.ForemanRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class ForemanService {
     }
 
     public Foreman saveForeman(Foreman foreman) {
+        if (foreman.getRole() == null) {
+            foreman.setRole(Role.ROLE_FOREMAN); // Устанавливаем роль по умолчанию
+        }
         return foremanRepository.save(foreman);
     }
 

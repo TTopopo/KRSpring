@@ -38,6 +38,7 @@ public class Worker {
     @JoinColumn(name = "foreman_id")
     private Foreman foreman;
 
-    @OneToMany(mappedBy = "worker")
-    private List<WorkerObject> workerObjects;
+    @ManyToOne
+    @JoinColumn(name = "object_id")
+    private Object object; // Добавлено поле для хранения объекта
 }

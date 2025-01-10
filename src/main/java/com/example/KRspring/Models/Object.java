@@ -40,7 +40,7 @@ public class Object {
     private Foreman foreman;
 
     @OneToMany(mappedBy = "object")
-    private List<WorkerObject> workerObjects;
+    private List<Worker> workers; // Добавлено поле для хранения списка рабочих
 
     @PrePersist
     protected void onCreate() {

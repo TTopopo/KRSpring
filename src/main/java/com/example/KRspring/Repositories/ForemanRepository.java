@@ -15,3 +15,4 @@ public interface ForemanRepository extends JpaRepository<Foreman, Long> {
     // Метод для поиска по имени пользователя
     Foreman findByUsername(String username);
 }
+

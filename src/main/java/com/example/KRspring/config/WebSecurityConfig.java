@@ -29,10 +29,11 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/register", "/customers/main").permitAll()
-                        .requestMatchers("/customers/delete/**", "/customers/update/**", "/foremans/new", "/workers/new").hasRole("ADMIN")
-                        .requestMatchers("/objects/new").hasAnyRole("ADMIN", "CUSTOMER") // Разрешить заказчику добавлять новые объекты
+                        .requestMatchers("/register", "/customers/main", "/favicon.ico", "/css/**", "/js/**", "/images/**").permitAll()
+                        .requestMatchers("/customers/delete/**", "/customers/update/**", "/foremans/new").hasRole("ADMIN")
+                        .requestMatchers("/objects/new").hasAnyRole("ADMIN", "CUSTOMER")
                         .requestMatchers("/objects/**").hasAnyRole("ADMIN", "CUSTOMER", "FOREMAN")
+                        .requestMatchers("/workers/new").hasAnyRole("ADMIN", "FOREMAN")
                         .requestMatchers("/workers/**").hasAnyRole("ADMIN", "FOREMAN")
                         .anyRequest().authenticated()
                 )
@@ -51,5 +52,4 @@ public class WebSecurityConfig {
 
         return http.build();
     }
-
 }

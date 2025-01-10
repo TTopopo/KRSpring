@@ -16,38 +16,38 @@ public class Foreman {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank(message = "Имя не может быть пустым")
-    @Size(min = 2, max = 50, message = "Имя должно быть от 2 до 50 символов")
+    @NotBlank(message = "Имя прораба не может быть пустым")
+    @Size(min = 2, max = 50, message = "Имя прораба должно быть от 2 до 50 символов")
     private String foremanName;
 
-    @NotBlank(message = "Фамилия не может быть пустой")
-    @Size(min = 2, max = 50, message = "Фамилия должна быть от 2 до 50 символов")
+    @NotBlank(message = "Фамилия прораба не может быть пустой")
+    @Size(min = 2, max = 50, message = "Фамилия прораба должна быть от 2 до 50 символов")
     private String foremanSurname;
 
-    @NotBlank(message = "Отчество не может быть пустой")
-    @Size(min = 2, max = 50, message = "Отчество должна быть от 2 до 50 символов")
     private String foremanPatronymic;
+
+    @NotBlank(message = "Номер телефона прораба не может быть пустым")
+    @Size(min = 10, max = 15, message = "Номер телефона прораба должен быть от 10 до 15 символов")
+    private String foremanPhoneNumber;
 
     @NotBlank(message = "Специализация не может быть пустой")
     @Size(min = 2, max = 50, message = "Специализация должна быть от 2 до 50 символов")
     private String specialization;
 
-    @NotBlank(message = "Номер телефона не может быть пустым")
-    @Size(min = 10, max = 15, message = "Номер телефона должен быть от 10 до 15 символов")
-    @Column(name = "foreman_phone_number", length = 15)
-    private String foremanPhoneNumber;
-
     @NotBlank(message = "Квалификация не может быть пустой")
     @Size(min = 2, max = 50, message = "Квалификация должна быть от 2 до 50 символов")
     private String qualification;
 
-    @Column(name = "username", unique = true, length = 50)
-    private String username;
+    @Enumerated(EnumType.STRING)
+    private Role role = Role.ROLE_FOREMAN; // Устанавливаем роль по умолчанию
 
-    @OneToMany(mappedBy = "foreman")
-    private List<Worker> workers;
+    @Column(unique = true, nullable = false)
+    private String username;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
+
+    @OneToMany(mappedBy = "foreman")
+    private List<Worker> workers;
 }

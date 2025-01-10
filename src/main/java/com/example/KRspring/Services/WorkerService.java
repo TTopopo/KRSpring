@@ -41,4 +41,8 @@ public class WorkerService {
             return workerRepository.findAll();
         }
     }
+
+    public List<Worker> getWorkersByForemanId(Long foremanId) {
+        return workerRepository.findByForemanId(foremanId); // Добавлен метод для получения рабочих по ID прораба
+    }
 }

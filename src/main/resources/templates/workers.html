@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Рабочие</title>
@@ -44,10 +44,10 @@
             background-color: #45a049;
         }
         .btn-group .btn-details {
-            background-color: #007bff;
+            background-color: #6a0dad; /* Измененный цвет фона */
         }
         .btn-group .btn-details:hover {
-            background-color: #0056b3;
+            background-color: #5a008e; /* Измененный цвет фона при наведении */
         }
         .btn-group .btn-edit {
             background-color: #ff9800;
@@ -60,6 +60,20 @@
         }
         .btn-group .btn-delete:hover {
             background-color: #e03131;
+        }
+        .user-info {
+            background-color: #e9ecef; /* Цвет фона блока */
+            padding: 20px;
+            border-radius: 8px;
+            margin-top: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .user-info h2 {
+            color: #6a0dad; /* Цвет заголовка */
+        }
+        .user-info p {
+            margin: 5px 0;
+            color: #343a40; /* Цвет текста */
         }
     </style>
 </head>
@@ -88,6 +102,7 @@
             <th>Номер телефона</th>
             <th>Должность</th>
             <th>Прораб</th>
+            <th>Объект</th>
             <th>Действия</th>
         </tr>
         </thead>
@@ -101,6 +116,7 @@
             <td th:text="${worker.position}"></td>
             <td th:if="${worker.foreman != null}" th:text="${worker.foreman.foremanName} + ' ' + ${worker.foreman.foremanSurname}"></td>
             <td th:if="${worker.foreman == null}">Нет прораба</td>
+            <td th:text="${worker.object != null ? worker.object.name : 'Объект не назначен'}"></td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/workers/{id}(id=${worker.id})}" class="btn-details">Детали</a>
@@ -112,7 +128,15 @@
         </tr>
         </tbody>
     </table>
-
+    <div th:if="${currentUser != null and #authorization.expression('hasRole(''ROLE_FOREMAN'')')}" class="user-info mt-4">
+        <h2>Текущий пользователь</h2>
+        <div sec:authorize="hasRole('ROLE_FOREMAN')">
+            <p>Имя: <span th:text="${currentUser.foremanName}"></span></p>
+            <p>Фамилия: <span th:text="${currentUser.foremanSurname}"></span></p>
+            <p>Отчество: <span th:text="${currentUser.foremanPatronymic}"></span></p>
+            <p>Телефон: <span th:text="${currentUser.foremanPhoneNumber}"></span></p>
+        </div>
+    </div>
     <div class="btn-group">
         <a href="/" class="btn-back">Назад</a>
     </div>

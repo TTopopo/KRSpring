@@ -2,6 +2,7 @@ package com.example.KRspring.Controllers;
 
 import com.example.KRspring.Models.Customer;
 import com.example.KRspring.Models.Foreman;
+import com.example.KRspring.Models.Role;
 import com.example.KRspring.Models.User;
 import com.example.KRspring.Services.CustomerService;
 import com.example.KRspring.Services.ForemanService;
@@ -93,6 +94,7 @@ public class RegistrationController {
             foreman.setSpecialization(user.getSpecialization());
             foreman.setQualification(user.getQualification());
             foreman.setUsername(user.getUsername()); // Устанавливаем username для Foreman
+            foreman.setRole(Role.ROLE_FOREMAN); // Устанавливаем роль для Foreman
             foremanService.saveForeman(foreman);
 
             // Clear customer fields
@@ -115,6 +117,7 @@ public class RegistrationController {
         }
         if (user.getCustomerSurname() == null || user.getCustomerSurname().isEmpty()) {
             bindingResult.rejectValue("customerSurname", "error.customerSurname", "Фамилия не может быть пустой");
+
         }
         if (user.getCustomerPatronymic() == null || user.getCustomerPatronymic().isEmpty()) {
             bindingResult.rejectValue("customerPatronymic", "error.customerPatronymic", "Отчество не может быть пустым");
