@@ -32,6 +32,7 @@ public class ObjectService {
         objectRepository.save(object);
     }
 
+
     public void deleteObject(Long id) {
         objectRepository.deleteById(id);
     }

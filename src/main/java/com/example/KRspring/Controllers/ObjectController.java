@@ -125,11 +125,14 @@ public class ObjectController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         Object object = objectService.getObjectById(id);
+
         if (authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_CUSTOMER"))) {
             if (!objectService.isObjectOwnedByCustomer(object, username)) {
                 return "redirect:/objects";
             }
         }
+
+        // Заполняем поля значениями из существующего объекта
         model.addAttribute("object", object);
         model.addAttribute("customers", customerService.getAllCustomers());
         model.addAttribute("foremans", foremanService.getAllForemans());
@@ -137,41 +140,43 @@ public class ObjectController {
         return "edit_object";
     }
 
-    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER', 'ROLE_FOREMAN')")
+
+    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FOREMAN')")
     @PostMapping("/objects/edit/{id}")
     public String updateObject(@PathVariable Long id, @Valid Object object, BindingResult result, Model model) {
+        // Логирование входящих данных
+        logger.info("Updating object with id: {}, type: {}, name: {}, address: {}, status: {}",
+                id, object.getType(), object.getName(), object.getAddress(), object.getStatus());
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object existingObject = objectService.getObjectById(id);
+
+        if (existingObject == null) {
+            logger.error("Object with id {} not found", id);
+            return "redirect:/objects";
+        }
+
+        // Обновляем все поля, если пользователь является админом или прорабом
+        existingObject.setType(object.getType());
+        existingObject.setName(object.getName());
+        existingObject.setAddress(object.getAddress());
+        existingObject.setCustomer(object.getCustomer());
+        existingObject.setForeman(object.getForeman());
+        existingObject.setStatus(object.getStatus());
+        logger.info("Updating object with id: {}, new type: {}, new name: {}, new address: {}, new status: {}",
+                id, existingObject.getType(), existingObject.getName(), existingObject.getAddress(), existingObject.getStatus());
+
         if (result.hasErrors()) {
             logger.error("Validation errors: {}", result.getAllErrors());
-            object.setId(id);
+            object.setId(id); // Устанавливаем идентификатор объекта
             model.addAttribute("customers", customerService.getAllCustomers());
             model.addAttribute("foremans", foremanService.getAllForemans());
             return "edit_object";
         }
 
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        Object existingObject = objectService.getObjectById(id);
-
-        if (authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_FOREMAN"))) {
-            // Обновляем только статус, если пользователь является прорабом
-            existingObject.setStatus(object.getStatus());
-            logger.info("Updating object status with id: {}, new status: {}", id, object.getStatus());
-        } else {
-            // Обновляем все поля, если пользователь не является прорабом
-            existingObject.setType(object.getType());
-            existingObject.setName(object.getName());
-            existingObject.setAddress(object.getAddress());
-            existingObject.setCustomer(object.getCustomer());
-            existingObject.setForeman(object.getForeman());
-            existingObject.setStatus(object.getStatus());
-            logger.info("Updating object with id: {}, new status: {}", id, object.getStatus());
-        }
-
         objectService.saveObject(existingObject);
         return "redirect:/objects";
     }
-
-
-
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/objects/delete/{id}")
