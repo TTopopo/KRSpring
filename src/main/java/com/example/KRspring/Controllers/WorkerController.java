@@ -2,7 +2,7 @@ package com.example.KRspring.Controllers;
 
 import com.example.KRspring.Models.Foreman;
 import com.example.KRspring.Models.Worker;
-import com.example.KRspring.Models.Role; // Добавьте импорт для Role
+import com.example.KRspring.Models.Role;
 import com.example.KRspring.Services.ForemanService;
 import com.example.KRspring.Services.ObjectService;
 import com.example.KRspring.Services.WorkerService;
@@ -52,7 +52,6 @@ public class WorkerController {
         return "workers";
     }
 
-
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FOREMAN')")
     @GetMapping("/workers/new")
     public String showNewWorkerForm(Model model) {
@@ -60,7 +59,7 @@ public class WorkerController {
         Foreman currentUser = getCurrentUser();
 
         // Добавляем текущего пользователя в список прорабов, если у него есть роль прораба
-        if (currentUser != null && currentUser.getRole().equals(Role.ROLE_FOREMAN)) {
+        if (currentUser != null && currentUser.getRole() != null && currentUser.getRole().equals(Role.ROLE_FOREMAN)) {
             foremans.add(currentUser);
         }
 

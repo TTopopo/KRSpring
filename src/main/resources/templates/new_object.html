@@ -100,6 +100,7 @@
                 <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.foremanName} + ' ' + ${foreman.foremanSurname}"></option>
             </select>
         </div>
+
         <div class="btn-group">
             <a href="/objects" class="btn-back">Назад</a>
             <button type="submit" class="btn-save">Сохранить</button>

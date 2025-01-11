@@ -19,4 +19,7 @@ public interface ObjectRepository extends JpaRepository<Object, Long> {
     List<Object> findByNameAndForemanForemanName(String name, String foremanName);
     List<Object> findByTypeAndForemanForemanName(String type, String foremanName);
     List<Object> findByNameAndTypeAndForemanForemanName(String name, String type, String foremanName);
+
+    // Метод для поиска объектов по идентификатору прораба
+    List<Object> findByForemanId(Long foremanId);
 }

@@ -67,6 +67,7 @@
 <div class="container">
     <h1>Список прорабов</h1>
     <a href="/foremans/new" class="btn btn-primary mb-3">Добавить прораба</a>
+    <a href="/foremans/download" class="btn btn-success mb-3">Скачать отчет</a>
 
     <form method="get" th:action="@{/foremans/search}" class="form-inline mb-4">
         <div class="form-group mr-2">
@@ -89,6 +90,7 @@
             <th>Номер телефона</th>
             <th>Квалификация</th>
             <th>Заказчик</th>
+            <th>Объект</th> <!-- Добавлен столбец "Объект" -->
             <th>Действия</th>
         </tr>
         </thead>
@@ -103,6 +105,8 @@
             <td th:text="${foreman.qualification}"></td>
             <td th:if="${foreman.customer != null}" th:text="${foreman.customer.customerName} + ' ' + ${foreman.customer.customerSurname}"></td>
             <td th:if="${foreman.customer == null}">Нет заказчика</td>
+            <td th:if="${foreman.object != null}" th:text="${foreman.object.name}"></td> <!-- Отображение названия объекта -->
+            <td th:if="${foreman.object == null}">Объект не назначен</td>
             <td>
                 <div class="btn-group">
                     <a th:href="@{/foremans/{id}(id=${foreman.id})}" class="btn-details">Детали</a>

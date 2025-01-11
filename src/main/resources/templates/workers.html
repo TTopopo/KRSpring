@@ -81,6 +81,7 @@
 <div class="container">
     <h1>Список рабочих</h1>
     <a href="/workers/new" class="btn btn-primary mb-3">Добавить рабочего</a>
+    <a href="/workers/download" class="btn btn-success mb-3">Скачать отчет</a>
 
     <form method="get" th:action="@{/workers/search}" class="form-inline mb-4">
         <div class="form-group mr-2">
@@ -129,8 +130,8 @@
         </tbody>
     </table>
     <div th:if="${currentUser != null and #authorization.expression('hasRole(''ROLE_FOREMAN'')')}" class="user-info mt-4">
-        <h2>Текущий пользователь</h2>
         <div sec:authorize="hasRole('ROLE_FOREMAN')">
+            <h2>Текущий Прораб</h2>
             <p>Имя: <span th:text="${currentUser.foremanName}"></span></p>
             <p>Фамилия: <span th:text="${currentUser.foremanSurname}"></span></p>
             <p>Отчество: <span th:text="${currentUser.foremanPatronymic}"></span></p>

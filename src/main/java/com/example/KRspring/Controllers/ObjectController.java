@@ -6,6 +6,7 @@ import com.example.KRspring.Services.CustomerService;
 import com.example.KRspring.Services.ForemanService;
 import com.example.KRspring.Services.ObjectService;
 import com.example.KRspring.Services.UserService;
+import com.example.KRspring.Repositories.WorkerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -38,6 +39,9 @@ public class ObjectController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private WorkerRepository workerRepository;
 
     @GetMapping("/objects")
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_CUSTOMER', 'ROLE_FOREMAN')")
@@ -86,7 +90,7 @@ public class ObjectController {
         model.addAttribute("object", newObject);
         model.addAttribute("customers", customerService.getAllCustomers());
         model.addAttribute("foremans", foremanService.getAllForemans());
-        model.addAttribute("statuses", ObjectStatus.values()); // Добавьте статусы в модель
+        model.addAttribute("statuses", ObjectStatus.values());
         return "new_object";
     }
 
@@ -105,9 +109,20 @@ public class ObjectController {
             String username = authentication.getName();
             Customer customer = customerService.getCustomerByUsername(username);
             object.setCustomer(customer);
+
+            // Сохраняем объект, чтобы получить его идентификатор
+            object = objectService.saveObject(object);
+
+            if (object.getForeman() != null) {
+                Foreman foreman = foremanService.getForemanById(object.getForeman().getId());
+                foreman.setCustomer(customer);
+                foreman.setObject(object); // Используем setObject
+                foremanService.saveForeman(foreman);
+            }
+        } else {
+            objectService.saveObject(object);
         }
 
-        objectService.saveObject(object);
         return "redirect:/objects";
     }
 
@@ -132,19 +147,20 @@ public class ObjectController {
             }
         }
 
-        // Заполняем поля значениями из существующего объекта
         model.addAttribute("object", object);
         model.addAttribute("customers", customerService.getAllCustomers());
         model.addAttribute("foremans", foremanService.getAllForemans());
-        model.addAttribute("statuses", ObjectStatus.values()); // Добавьте статусы в модель
+        model.addAttribute("statuses", ObjectStatus.values());
+
+        boolean isAdmin = authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_ADMIN"));
+        model.addAttribute("isAdmin", isAdmin);
+
         return "edit_object";
     }
-
 
     @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_FOREMAN')")
     @PostMapping("/objects/edit/{id}")
     public String updateObject(@PathVariable Long id, @Valid Object object, BindingResult result, Model model) {
-        // Логирование входящих данных
         logger.info("Updating object with id: {}, type: {}, name: {}, address: {}, status: {}",
                 id, object.getType(), object.getName(), object.getAddress(), object.getStatus());
 
@@ -156,19 +172,23 @@ public class ObjectController {
             return "redirect:/objects";
         }
 
-        // Обновляем все поля, если пользователь является админом или прорабом
-        existingObject.setType(object.getType());
-        existingObject.setName(object.getName());
-        existingObject.setAddress(object.getAddress());
-        existingObject.setCustomer(object.getCustomer());
-        existingObject.setForeman(object.getForeman());
-        existingObject.setStatus(object.getStatus());
-        logger.info("Updating object with id: {}, new type: {}, new name: {}, new address: {}, new status: {}",
-                id, existingObject.getType(), existingObject.getName(), existingObject.getAddress(), existingObject.getStatus());
+        if (authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_FOREMAN"))) {
+            existingObject.setStatus(object.getStatus());
+            logger.info("Updating object status with id: {}, new status: {}", id, object.getStatus());
+        } else {
+            existingObject.setType(object.getType());
+            existingObject.setName(object.getName());
+            existingObject.setAddress(object.getAddress());
+            existingObject.setCustomer(object.getCustomer());
+            existingObject.setForeman(object.getForeman());
+            existingObject.setStatus(object.getStatus());
+            logger.info("Updating object with id: {}, new type: {}, new name: {}, new address: {}, new status: {}",
+                    id, existingObject.getType(), existingObject.getName(), existingObject.getAddress(), existingObject.getStatus());
+        }
 
         if (result.hasErrors()) {
             logger.error("Validation errors: {}", result.getAllErrors());
-            object.setId(id); // Устанавливаем идентификатор объекта
+            object.setId(id);
             model.addAttribute("customers", customerService.getAllCustomers());
             model.addAttribute("foremans", foremanService.getAllForemans());
             return "edit_object";
@@ -181,7 +201,22 @@ public class ObjectController {
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/objects/delete/{id}")
     public String deleteObject(@PathVariable Long id) {
-        objectService.deleteObject(id);
+        try {
+            logger.info("Deleting object with id {}", id);
+
+            List<Worker> workers = workerRepository.findByObjectId(id);
+            logger.info("Found {} related workers", workers.size());
+            for (Worker worker : workers) {
+                worker.setObject(null);
+                workerRepository.save(worker);
+                logger.info("Updated worker with id {}", worker.getId());
+            }
+
+            objectService.deleteObject(id);
+            logger.info("Object with id {} deleted successfully", id);
+        } catch (Exception e) {
+            logger.error("Error deleting object with id {}", id, e);
+        }
         return "redirect:/objects";
     }
 

@@ -96,6 +96,19 @@
             </select>
             <div th:if="${#fields.hasErrors('customer')}" th:errors="*{customer}">Заказчик Error</div>
         </div>
+        <div class="form-group">
+            <label for="object">Объект:</label>
+            <select class="form-control" id="object" th:field="*{object}">
+                <option value="">Объект не назначен</option>
+                <option th:each="object : ${objects}" th:value="${object.id}" th:text="${object.name}" th:selected="${object.id == (foreman.object?.id ?: -1)}"></option>
+            </select>
+            <div th:if="${#fields.hasErrors('object')}" th:errors="*{object}">Объект Error</div>
+        </div>
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <input type="text" class="form-control" id="username" th:field="*{username}" required>
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Username Error</div>
+        </div>
         <div class="btn-group">
             <button type="submit" class="btn-save">Сохранить</button>
             <a href="/foremans" class="btn-back">Назад</a>

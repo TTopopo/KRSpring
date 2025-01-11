@@ -60,31 +60,31 @@
     <form th:action="@{/objects/edit/{id}(id=${object.id})}" th:object="${object}" method="post">
         <input type="hidden" th:field="*{id}" />
 
-        <!-- Поля, которые теперь доступны для прораба -->
+        <!-- Поля, которые недоступны для редактирования прорабом -->
         <div class="form-group">
             <label for="type">Тип:</label>
-            <input type="text" class="form-control" id="type" th:field="*{type}" required>
+            <input type="text" class="form-control" id="type" th:field="*{type}" th:readonly="${!isAdmin}">
             <div th:if="${#fields.hasErrors('type')}" th:errors="*{type}">Тип Error</div>
         </div>
         <div class="form-group">
             <label for="name">Название:</label>
-            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+            <input type="text" class="form-control" id="name" th:field="*{name}" th:readonly="${!isAdmin}">
             <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Название Error</div>
         </div>
         <div class="form-group">
             <label for="address">Адрес:</label>
-            <input type="text" class="form-control" id="address" th:field="*{address}" required>
+            <input type="text" class="form-control" id="address" th:field="*{address}" th:readonly="${!isAdmin}">
             <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Адрес Error</div>
         </div>
         <div class="form-group">
             <label for="customer">Заказчик:</label>
-            <select class="form-control" id="customer" th:field="*{customer}">
+            <select class="form-control" id="customer" th:field="*{customer}" th:disabled="${!isAdmin}">
                 <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.customerName} + ' ' + ${customer.customerSurname}" th:selected="${object.customer.id == customer.id}"></option>
             </select>
         </div>
         <div class="form-group">
             <label for="foreman">Прораб:</label>
-            <select class="form-control" id="foreman" th:field="*{foreman}">
+            <select class="form-control" id="foreman" th:field="*{foreman}" th:disabled="${!isAdmin}">
                 <option value="">Прораб не назначен</option>
                 <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.foremanName} + ' ' + ${foreman.foremanSurname}" th:selected="${object.foreman.id == foreman.id}"></option>
             </select>

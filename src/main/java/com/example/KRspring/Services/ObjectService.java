@@ -27,9 +27,9 @@ public class ObjectService {
         return objectRepository.findById(id).orElse(null);
     }
 
-    public void saveObject(Object object) {
+    public Object saveObject(Object object) {
         logger.info("Saving object with id: {}, status: {}", object.getId(), object.getStatus());
-        objectRepository.save(object);
+        return objectRepository.save(object);
     }
 
 
@@ -82,6 +82,14 @@ public class ObjectService {
             return objectRepository.findByTypeAndForemanForemanName(type, foremanName);
         } else {
             return objectRepository.findByForemanForemanName(foremanName);
+        }
+    }
+
+    public void updateObjectsToNullForeman(Long foremanId) {
+        List<Object> objects = objectRepository.findByForemanId(foremanId);
+        for (Object obj : objects) {
+            obj.setForeman(null);
+            objectRepository.save(obj);
         }
     }
 }
