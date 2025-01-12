@@ -61,12 +61,19 @@
         .btn-group .btn-delete:hover {
             background-color: #e03131;
         }
+        .btn-group .btn-send-email {
+            background-color: #007bff;
+        }
+        .btn-group .btn-send-email:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
 <div class="container">
     <h1>Список заказчиков</h1>
     <a href="/customers/download" class="btn btn-success mb-3">Скачать отчет</a>
+    <a href="/send-email" class="btn btn-primary mb-3">Отправить письмо</a>
 
     <form method="get" th:action="@{/customers/search}" class="form-inline mb-4">
         <div class="form-group mr-2">
