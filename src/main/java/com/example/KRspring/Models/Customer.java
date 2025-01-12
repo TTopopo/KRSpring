@@ -25,6 +25,8 @@ public class Customer {
     @Size(min = 2, max = 50, message = "Фамилия клиента должна быть от 2 до 50 символов")
     private String customerSurname;
 
+    @NotBlank(message = "Отчество клиента не может быть пустой")
+    @Size(min = 2, max = 50, message = "Отчество клиента должна быть от 2 до 50 символов")
     private String customerPatronymic;
 
     @NotBlank(message = "Номер телефона клиента не может быть пустым")

@@ -24,6 +24,8 @@ public class Worker {
     @Size(min = 2, max = 50, message = "Фамилия должна быть от 2 до 50 символов")
     private String surname;
 
+    @NotBlank(message = "Отчество не может быть пустой")
+    @Size(min = 2, max = 50, message = "Отчество должна быть от 2 до 50 символов")
     private String patronymic;
 
     @NotBlank(message = "Номер телефона не может быть пустым")
