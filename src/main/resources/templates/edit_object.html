@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
 <head>
     <meta charset="UTF-8">
     <title>Редактирование объекта</title>
@@ -79,14 +79,14 @@
         <div class="form-group">
             <label for="customer">Заказчик:</label>
             <select class="form-control" id="customer" th:field="*{customer}" th:disabled="${!isAdmin}">
-                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.customerName} + ' ' + ${customer.customerSurname}" th:selected="${object.customer.id == customer.id}"></option>
+                <option th:each="customer : ${customers}" th:value="${customer.id}" th:text="${customer.customerName} + ' ' + ${customer.customerSurname}" th:selected="${object.customer?.id == customer.id}"></option>
             </select>
         </div>
         <div class="form-group">
             <label for="foreman">Прораб:</label>
             <select class="form-control" id="foreman" th:field="*{foreman}" th:disabled="${!isAdmin}">
                 <option value="">Прораб не назначен</option>
-                <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.foremanName} + ' ' + ${foreman.foremanSurname}" th:selected="${object.foreman.id == foreman.id}"></option>
+                <option th:each="foreman : ${foremans}" th:value="${foreman.id}" th:text="${foreman.foremanName} + ' ' + ${foreman.foremanSurname}" th:selected="${object.foreman?.id == foreman.id}"></option>
             </select>
         </div>
 

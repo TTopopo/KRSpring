@@ -97,6 +97,11 @@
                 <input type="text" class="form-control" id="customerPhoneNumber" th:field="*{customerPhoneNumber}" required>
                 <div th:if="${#fields.hasErrors('customerPhoneNumber')}" th:errors="*{customerPhoneNumber}">Номер телефона Error</div>
             </div>
+            <div class="form-group">
+                <label for="customerEmail">Email:</label>
+                <input type="email" class="form-control" id="customerEmail" th:field="*{customerEmail}" required>
+                <div th:if="${#fields.hasErrors('customerEmail')}" th:errors="*{customerEmail}">Email Error</div>
+            </div>
         </div>
         <div id="foremanFields" style="display: none;">
             <div class="form-group">
@@ -153,6 +158,7 @@
             document.getElementById('customerSurname').required = true;
             document.getElementById('customerPatronymic').required = true;
             document.getElementById('customerPhoneNumber').required = true;
+            document.getElementById('customerEmail').required = true;
 
             // Убираем required для полей прораба
             document.getElementById('foremanName').required = false;
@@ -173,6 +179,7 @@
             document.getElementById('customerSurname').required = false;
             document.getElementById('customerPatronymic').required = false;
             document.getElementById('customerPhoneNumber').required = false;
+            document.getElementById('customerEmail').required = false;
 
             // Устанавливаем required для полей прораба
             document.getElementById('foremanName').required = true;
@@ -193,6 +200,7 @@
             document.getElementById('customerSurname').required = false;
             document.getElementById('customerPatronymic').required = false;
             document.getElementById('customerPhoneNumber').required = false;
+            document.getElementById('customerEmail').required = false;
             document.getElementById('foremanName').required = false;
             document.getElementById('foremanSurname').required = false;
             document.getElementById('foremanPatronymic').required = false;

@@ -50,6 +50,12 @@ public class User implements UserDetails {
     @Column(name = "customer_phone_number", length = 15)
     private String customerPhoneNumber;
 
+    @Email(message = "Некорректный адрес электронной почты", groups = CustomerValidationGroup.class)
+    @NotBlank(message = "Email не может быть пустым", groups = CustomerValidationGroup.class)
+    @Size(max = 255, message = "Email должен быть не длиннее 255 символов", groups = CustomerValidationGroup.class)
+    @Column(length = 255)
+    private String customerEmail;
+
     @Size(max = 50, message = "Имя прораба не может превышать 50 символов", groups = ForemanValidationGroup.class)
     @Column(length = 50)
     private String foremanName;

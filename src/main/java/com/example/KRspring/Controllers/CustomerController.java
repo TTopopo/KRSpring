@@ -67,9 +67,11 @@ public class CustomerController {
             customer.setId(id);
             return "edit_customer";
         }
+        customer.setId(id); // Убедитесь, что ID установлен
         customerService.saveCustomer(customer);
         return "redirect:/customers";
     }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/customers/delete/{id}")

@@ -149,6 +149,7 @@ public class ExcelReportService {
         header.createCell(2).setCellValue("Фамилия");
         header.createCell(3).setCellValue("Отчество");
         header.createCell(4).setCellValue("Номер телефона");
+        header.createCell(5).setCellValue("Почта");
 
         // Заполнение данных
         int rowNum = 1;
@@ -159,10 +160,11 @@ public class ExcelReportService {
             row.createCell(2).setCellValue(customer.getCustomerSurname());
             row.createCell(3).setCellValue(customer.getCustomerPatronymic());
             row.createCell(4).setCellValue(customer.getCustomerPhoneNumber());
+            row.createCell(5).setCellValue(customer.getCustomerEmail());
         }
 
         // Автоматическое изменение ширины столбцов
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 6; i++) {
             sheet.autoSizeColumn(i);
         }
 

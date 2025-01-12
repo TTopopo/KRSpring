@@ -44,10 +44,10 @@
             background-color: #45a049;
         }
         .btn-group .btn-details {
-            background-color: #007bff;
+            background-color: #6a0dad; /* Измененный цвет фона */
         }
         .btn-group .btn-details:hover {
-            background-color: #0056b3;
+            background-color: #5a008e; /* Измененный цвет фона при наведении */
         }
         .btn-group .btn-edit {
             background-color: #ff9800;
@@ -66,7 +66,6 @@
 <body>
 <div class="container">
     <h1>Список заказчиков</h1>
-    <a href="/customers/new" class="btn btn-primary mb-3">Добавить заказчика</a>
     <a href="/customers/download" class="btn btn-success mb-3">Скачать отчет</a>
 
     <form method="get" th:action="@{/customers/search}" class="form-inline mb-4">
@@ -87,6 +86,7 @@
             <th>Фамилия</th>
             <th>Отчество</th>
             <th>Номер телефона</th>
+            <th>Email</th> <!-- Добавлен заголовок для email -->
             <th>Действия</th>
         </tr>
         </thead>
@@ -97,6 +97,7 @@
             <td th:text="${customer.customerSurname}"></td>
             <td th:text="${customer.customerPatronymic}"></td>
             <td th:text="${customer.customerPhoneNumber}"></td>
+            <td th:text="${customer.customerEmail}"></td> <!-- Добавлено значение email -->
             <td>
                 <div class="btn-group">
                     <a th:href="@{/customers/{id}(id=${customer.id})}" class="btn-details">Детали</a>

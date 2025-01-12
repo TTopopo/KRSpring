@@ -18,6 +18,19 @@ public class WorkerService {
     }
 
     public Worker saveWorker(Worker worker) {
+        if (worker.getId() != null) {
+            Worker existingWorker = getWorkerById(worker.getId());
+            if (existingWorker != null) {
+                existingWorker.setName(worker.getName());
+                existingWorker.setSurname(worker.getSurname());
+                existingWorker.setPatronymic(worker.getPatronymic());
+                existingWorker.setPhoneNumber(worker.getPhoneNumber());
+                existingWorker.setPosition(worker.getPosition());
+                existingWorker.setForeman(worker.getForeman());
+                existingWorker.setObject(worker.getObject());
+                return workerRepository.save(existingWorker);
+            }
+        }
         return workerRepository.save(worker);
     }
 

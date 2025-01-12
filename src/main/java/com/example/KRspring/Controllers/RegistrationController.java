@@ -14,6 +14,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.Optional;
+
 
 @Controller
 @RequestMapping("/register")
@@ -47,14 +49,14 @@ public class RegistrationController {
     }
 
     @PostMapping
-    public ModelAndView registerUser(@Validated User user, BindingResult bindingResult) {
+    public ModelAndView registerUser(@Valid User user, BindingResult bindingResult) {
         logger.info("Registering user: {}", user.getUsername());
         ModelAndView modelAndView = new ModelAndView("register");
 
         if ("ROLE_CUSTOMER".equals(user.getRole().name())) {
-            user = validateCustomer(user, bindingResult);
+            validateCustomer(user, bindingResult);
         } else if ("ROLE_FOREMAN".equals(user.getRole().name())) {
-            user = validateForeman(user, bindingResult);
+            validateForeman(user, bindingResult);
         }
 
         if (bindingResult.hasErrors()) {
@@ -74,6 +76,7 @@ public class RegistrationController {
             customer.setCustomerSurname(user.getCustomerSurname());
             customer.setCustomerPatronymic(user.getCustomerPatronymic());
             customer.setCustomerPhoneNumber(user.getCustomerPhoneNumber());
+            customer.setCustomerEmail(user.getCustomerEmail()); // Добавлено поле customerEmail
             customer.setUsername(user.getUsername()); // Устанавливаем username для Customer
             customerService.saveCustomer(customer);
 
@@ -102,6 +105,7 @@ public class RegistrationController {
             user.setCustomerSurname(null);
             user.setCustomerPatronymic(null);
             user.setCustomerPhoneNumber(null);
+            user.setCustomerEmail(null); // Очищаем поле customerEmail
         }
 
         logger.info("Registering user: {}, with role: {}", user.getUsername(), user.getRole());
@@ -110,14 +114,12 @@ public class RegistrationController {
         return modelAndView;
     }
 
-
-    private User validateCustomer(User user, BindingResult bindingResult) {
+    private void validateCustomer(User user, BindingResult bindingResult) {
         if (user.getCustomerName() == null || user.getCustomerName().isEmpty()) {
             bindingResult.rejectValue("customerName", "error.customerName", "Имя не может быть пустым");
         }
         if (user.getCustomerSurname() == null || user.getCustomerSurname().isEmpty()) {
             bindingResult.rejectValue("customerSurname", "error.customerSurname", "Фамилия не может быть пустой");
-
         }
         if (user.getCustomerPatronymic() == null || user.getCustomerPatronymic().isEmpty()) {
             bindingResult.rejectValue("customerPatronymic", "error.customerPatronymic", "Отчество не может быть пустым");
@@ -125,10 +127,12 @@ public class RegistrationController {
         if (user.getCustomerPhoneNumber() == null || user.getCustomerPhoneNumber().isEmpty()) {
             bindingResult.rejectValue("customerPhoneNumber", "error.customerPhoneNumber", "Номер телефона не может быть пустым");
         }
-        return user;
+        if (user.getCustomerEmail() == null || user.getCustomerEmail().isEmpty()) {
+            bindingResult.rejectValue("customerEmail", "error.customerEmail", "Email не может быть пустым");
+        }
     }
 
-    private User validateForeman(User user, BindingResult bindingResult) {
+    private void validateForeman(User user, BindingResult bindingResult) {
         if (user.getForemanName() == null || user.getForemanName().isEmpty()) {
             bindingResult.rejectValue("foremanName", "error.foremanName", "Имя не может быть пустым");
         }
@@ -147,6 +151,6 @@ public class RegistrationController {
         if (user.getQualification() == null || user.getQualification().isEmpty()) {
             bindingResult.rejectValue("qualification", "error.qualification", "Квалификация не может быть пустой");
         }
-        return user;
     }
+
 }

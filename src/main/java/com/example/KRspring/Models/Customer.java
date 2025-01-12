@@ -1,6 +1,7 @@
 package com.example.KRspring.Models;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
@@ -29,6 +30,11 @@ public class Customer {
     @NotBlank(message = "Номер телефона клиента не может быть пустым")
     @Size(min = 10, max = 15, message = "Номер телефона клиента должен быть от 10 до 15 символов")
     private String customerPhoneNumber;
+
+    @Email(message = "Некорректный адрес электронной почты")
+    @NotBlank(message = "Email не может быть пустым")
+    @Size(max = 255, message = "Email должен быть не длиннее 255 символов")
+    private String customerEmail;
 
     @Column(unique = true, nullable = false)
     private String username;

@@ -112,11 +112,13 @@ public class WorkerController {
     @PostMapping("/workers/edit/{id}")
     public String updateWorker(@PathVariable Long id, @Valid Worker worker, BindingResult result, Model model) {
         if (result.hasErrors()) {
-            worker.setId(id);
+            worker.setId(id); // Устанавливаем id рабочего в случае ошибок валидации
             model.addAttribute("foremans", foremanService.getAllForemans());
             model.addAttribute("objects", objectService.getAllObjects());
             return "edit_worker";
         }
+
+        worker.setId(id); // Устанавливаем id рабочего перед сохранением
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getAuthorities().stream().anyMatch(role -> role.getAuthority().equals("ROLE_FOREMAN"))) {
@@ -128,6 +130,7 @@ public class WorkerController {
         workerService.saveWorker(worker);
         return "redirect:/workers";
     }
+
 
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     @GetMapping("/workers/delete/{id}")

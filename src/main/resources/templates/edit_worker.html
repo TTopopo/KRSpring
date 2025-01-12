@@ -2,7 +2,7 @@
 <html lang="ru" xmlns:th="http://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
-    <title>Добавить нового рабочего</title>
+    <title>Редактировать рабочего</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
@@ -56,8 +56,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>Добавить нового рабочего</h1>
-    <form th:action="@{/workers/new}" th:object="${worker}" method="post">
+    <h1>Редактировать рабочего</h1>
+    <form th:action="@{/workers/edit/{id}(id=${worker.id})}" th:object="${worker}" method="post">
         <div class="form-group">
             <label for="name">Имя:</label>
             <input type="text" class="form-control" id="name" th:field="*{name}" required>
